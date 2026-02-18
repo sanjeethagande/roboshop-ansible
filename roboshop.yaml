@@ -7,7 +7,7 @@
    ami_id: ami-0220d79f3f480ecf5
    domain_name: sanjeethadevops.online
    env: dev
-   action: create
+   ec2_action: create
    instances:
      - catalogue
      - mongodb 
@@ -56,7 +56,7 @@
     loop: "{{ ec2_output.results }}"  
     when: 
     - item.item == "frontend"
-    - action == "create" 
+    - ec2_action == "create"
 
     - name: delete Route53 record
       amazon.aws.route53:
@@ -66,14 +66,14 @@
         type: A
         ttl: 1
         loop: "{{ instances }}"
-        when: action == "destroy"
+        when: ec2_action == "destroy"
 
     - name: delete EC2 instance
       amazon.aws.ec2_instance:
         state: absent
         name: "{{ item }}-{{ env }}"
         loop: "{{ instances }}"
-        when: action == "destroy"
+        when: ec2_action == "destroy"
 
    
 
