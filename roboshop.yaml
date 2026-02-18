@@ -27,7 +27,7 @@
 
     loop: "{{ instances }}"
     register: ec2_output
-    when: action == "create"
+    when: ec2_action == "create"
 
   - name: print the output
     ansible.builtin.debug:
