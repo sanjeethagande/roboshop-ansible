@@ -56,13 +56,24 @@
     loop: "{{ ec2_output.results }}"  
     when: 
     - item.item == "frontend"
-    - action == "create"  
+    - action == "create" 
+
+    - name: delete Route53 record
+      amazon.aws.route53:
+        state: absent
+        zone: "{{ domain_name }}"
+        record: "roboshop-{{ env }}.{{ domain_name }}"  
+        type: A
+        ttl: 1
+        loop: "{{ instances }}"
+        when: action == "destroy"
 
     - name: delete EC2 instance
       amazon.aws.ec2_instance:
         state: absent
         name: "{{ item }}-{{ env }}"
         loop: "{{ instances }}"
+        when: action == "destroy"
 
    
 
