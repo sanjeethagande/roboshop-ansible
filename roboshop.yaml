@@ -7,6 +7,7 @@
    ami_id: ami-0220d79f3f480ecf5
    domain_name: sanjeethadevops.online
    env: dev
+   action: create
    instances:
      - catalogue
      - mongodb 
@@ -26,6 +27,7 @@
 
     loop: "{{ instances }}"
     register: ec2_output
+    when: action == "create"
 
   - name: print the output
     ansible.builtin.debug:
@@ -41,7 +43,7 @@
         value: "{{ item.instances[0].private_ip_address }}"
         overwrite: true
     loop: "{{ ec2_output.results }}"      
-
+     
   - name: Create Route53 record
     amazon.aws.route53:
         state: present
@@ -52,7 +54,15 @@
         value: "{{ item.instances[0].public_ip_address }}"
         overwrite: true
     loop: "{{ ec2_output.results }}"  
-    when: item.item == "frontend"
+    when: 
+    - item.item == "frontend"
+    - action == "create"  
+
+    - name: delete EC2 instance
+      amazon.aws.ec2_instance:
+        state: absent
+        name: "{{ item }}-{{ env }}"
+        loop: "{{ instances }}"
 
    
 
