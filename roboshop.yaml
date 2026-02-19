@@ -1,3 +1,4 @@
+# ansible-playbook -i localhost -e {instrances=["mongodb","catalogue","redis","user","cart","mysql","shipping","rabbitmq","payment","frontend"]}
 - name: create EC2 instance and route53 records
   hosts: localhost
   connection: local
@@ -65,13 +66,15 @@
         record: "roboshop-{{ env }}.{{ domain_name }}"  
         type: A
         ttl: 1
+        wait: true
         loop: "{{ instances }}"
         when: ec2_action == "destroy"
 
     - name: delete EC2 instance
       amazon.aws.ec2_instance:
-        state: absent
+        state: absent       
         name: "{{ item }}-{{ env }}"
+        wait: false
         loop: "{{ instances }}"
         when: ec2_action == "destroy"
 
