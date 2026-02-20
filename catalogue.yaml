@@ -11,7 +11,7 @@
         state: present  
 
   - name: create system user roboshop 
-    ansible.builtin.catalogue :
+    ansible.builtin.user :
         name: roboshop
         system: yes
         home: /app
