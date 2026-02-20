@@ -11,7 +11,7 @@
         name: nodejs
         state: present     
 
-   - name: Create roboshop user
+   - name: create roboshop user
      ansible.builtin.user:
         name: roboshop
         system: yes
