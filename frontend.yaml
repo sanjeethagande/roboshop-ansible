@@ -2,18 +2,18 @@
   hosts: frontend
   become: yes
   tasks:
-  - name: enable nginx:1.24 -y
+  - name: enable nginx 1.24
     ansible.builtin.command: dnf module enable nginx:1.24 -y
 
-  - name: Install nginx
+  - name: install nginx
     ansible.builtin.dnf:
-        name: nginx
-        state: present 
+      name: nginx
+      state: present
 
   - name: Remove the entire directory
     ansible.builtin.file:
       path: /usr/share/nginx/html
-      state: absent        
+      state: absent
 
   - name: create html directory
     ansible.builtin.file:
@@ -46,6 +46,3 @@
       name: nginx
       state: restarted
       enabled: yes
-
-
-    
