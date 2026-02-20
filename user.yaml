@@ -1,6 +1,7 @@
 - name: User configure
   hosts: localhost
   connection: local
+  become: yes
   tasks:
    - name: enable node js 20
      ansible.builtin.command: dnf module enable nodejs:20 -y 
