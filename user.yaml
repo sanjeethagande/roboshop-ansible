@@ -52,9 +52,13 @@
    - name: copy user service file
      ansible.builtin.copy:
        src: user.service
-       dest: /etc/systemd/system/user.service        
+       dest: /etc/systemd/system/user.service   
 
-     name: start and enable user
+   - name: reload systemd daemon
+     ansible.builtin.systemd:
+      daemon_reload: yes         
+
+   - name: start and enable user
      ansible.builtin.service:
         name: user
         enabled: yes
