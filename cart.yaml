@@ -38,7 +38,7 @@
    - name: Download cart application code
      ansible.builtin.get_url:
         url: https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip
-        dest: /tmp/cart .zip
+        dest: /tmp/cart.zip
        
    - name: Unzip cart  code to /app
      ansible.builtin.unarchive:
@@ -52,8 +52,8 @@
 
    - name: copy cart  service file
      ansible.builtin.template:
-       src: cart .service
-       dest: /etc/systemd/system/cart .service   
+       src: cart.service
+       dest: /etc/systemd/system/cart.service   
 
    - name: reload systemd daemon
      ansible.builtin.systemd:
