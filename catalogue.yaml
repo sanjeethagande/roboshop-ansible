@@ -10,20 +10,29 @@
         name: nodejs
         state: present  
 
-  - name: Create roboshop catalogue 
+  - name: create system user roboshop 
     ansible.builtin.catalogue :
         name: roboshop
         system: yes
         home: /app
         shell: /sbin/nologin
-        comment: "roboshop system catalogue "
+        comment: "Roboshop system user "
+
+  - name: delete app directory
+    ansible.builtin.file:
+      path: /app
+      state: absent      
          
 
   - name: Create /app directory
     ansible.builtin.file:
         path: /app
         state: directory
-       
+
+  - name: delete catalogue zip file
+    ansible.builtin.file:
+      path: /tmp/catalogue.zip
+      state: absent      
 
   - name: Download catalogue application code
     ansible.builtin.get_url:
