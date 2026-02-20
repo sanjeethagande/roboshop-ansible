@@ -2,71 +2,70 @@
   hosts: shipping
   become: yes
   tasks:
-  - name: Install maven and mysql
-    ansible.builtin.dnf:
-       name: "{{ item }}"
-       state: present 
-    loop:
-      - maven
-      - mysql
+   - name: install packages
+     ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+     loop:
+       - maven
+       - mysql
 
-
-  - name: create roboshop shipping 
-    ansible.builtin.user :
+   - name: create roboshop shipping 
+     ansible.builtin.user :
         name: roboshop
         system: yes
         home: /app
         shell: /sbin/nologin
         comment: "roboshop system user "
 
-  - name: delete app directory
-    ansible.builtin.file:
+   - name: delete app directory
+     ansible.builtin.file:
       path: /app
       state: absent                   
          
 
-  - name: Create /app directory
-    ansible.builtin.file:
+   - name: Create /app directory
+     ansible.builtin.file:
         path: /app
         state: directory
 
-  - name: delete shipping zip file
-    ansible.builtin.file:
+   - name: delete shipping zip file
+     ansible.builtin.file:
       path: /tmp/shipping.zip
       state: absent        
        
-  - name: Download cart application code
-    ansible.builtin.get_url:
+   - name: Download cart application code
+     ansible.builtin.get_url:
         url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
         dest: /tmp/shipping.zip
        
-  - name: Unzip cart  code to /app
-    ansible.builtin.unarchive:
+   - name: Unzip cart  code to /app
+     ansible.builtin.unarchive:
         src: /tmp/shipping.zip
         dest: /app
         remote_src: yes
 
-  - name: Install npm dependencies
-    ansible.builtin.command: mvn clean package
-    args:
+   - name: Install npm dependencies
+     ansible.builtin.command: mvn clean package
+     args:
        chdir: /app  
 
-  - name: install dependencies
-    ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar 
-    args:
+   - name: install dependencies
+     ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar 
+     args:
       chdir: /app     
 
-  - name: create systemctl service
-    ansible.builtin.template:
+   - name: create systemctl service
+     ansible.builtin.template:
        src: shipping.service
        dest: /etc/systemd/system/shipping.service   
 
-  - name: reload systemd daemon
-    ansible.builtin.systemd_service:
+   - name: reload systemd daemon
+     ansible.builtin.systemd_service:
       daemon_reload: true        
 
-  - name: import shipping data
-    community.mysql.mysql_db:
+   - name: import shipping data
+     community.mysql.mysql_db:
       state: import
       name: all
       login_host: "{{ MYSQL_HOST }}"
