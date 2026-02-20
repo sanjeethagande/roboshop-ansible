@@ -43,6 +43,7 @@
         ttl: 1
         value: "{{ item.instances[0].private_ip_address }}"
         overwrite: true
+        wait: false
     loop: "{{ ec2_output.results }}"      
      
   - name: Create Route53 record
@@ -54,6 +55,7 @@
         ttl: 1
         value: "{{ item.instances[0].public_ip_address }}"
         overwrite: true
+        wait: false
     loop: "{{ ec2_output.results }}"  
     when: 
     - item.item == "frontend"
@@ -66,7 +68,7 @@
         record: "roboshop-{{ env }}.{{ domain_name }}"  
         type: A
         ttl: 1
-        wait: true
+        wait: false
         loop: "{{ instances }}"
         when: ec2_action == "destroy"
 
