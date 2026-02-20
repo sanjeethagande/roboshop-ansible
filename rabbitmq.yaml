@@ -8,7 +8,7 @@
       dest: /etc/yum.repos.d/rabbitmq.repo
   - name: Install node js
     ansible.builtin.dnf:
-        name: nrabbitmq-server
+        name: rabbitmq-server
         state: present
 
   - name: start and enable rabbitmq-server
