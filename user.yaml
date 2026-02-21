@@ -1,6 +1,5 @@
 - name: User configure
   hosts: user
-  connection: local
   become: yes
   tasks:
    - name: enable node js 20
