@@ -30,9 +30,9 @@
         path: /app
         state: directory
 
-   - name: delete catalogue zip file
+   - name: delete cart zip file
      ansible.builtin.file:
-      path: /tmp/catalogue.zip
+      path: /tmp/cart.zip
       state: absent        
        
    - name: Download cart application code
@@ -42,7 +42,7 @@
        
    - name: Unzip cart  code to /app
      ansible.builtin.unarchive:
-        src: /tmp/cart .zip
+        src: /tmp/cart.zip
         dest: /app
         remote_src: yes
 
