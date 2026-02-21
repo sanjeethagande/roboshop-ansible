@@ -12,6 +12,12 @@
         name: mongodb-org 
         state: present  
 
+  - name: start and enable mongodb
+    ansible.builtin.service:
+        name: mongod
+        enabled: yes
+        state: started    
+
   - name: Replace bindIp in mongod.conf
     ansible.builtin.replace:
         path: /etc/mongod.conf
@@ -22,4 +28,4 @@
     ansible.builtin.service:
         name: mongod
         enabled: yes
-        state: started                 
+        state: restarted                 
