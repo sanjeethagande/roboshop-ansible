@@ -69,16 +69,16 @@
         type: A
         ttl: 1
         wait: false
-        loop: "{{ instances }}"
-        when: ec2_action == "destroy"
+      loop: "{{ instances }}"
+      when: ec2_action == "destroy"
 
     - name: delete EC2 instance
       amazon.aws.ec2_instance:
-        state: absent       
+        state: absent
         name: "{{ item }}-{{ env }}"
         wait: false
-        loop: "{{ instances }}"
-        when: ec2_action == "destroy"
+      loop: "{{ instances }}"
+      when: ec2_action == "destroy"
 
    
 
