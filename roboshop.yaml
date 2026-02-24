@@ -8,7 +8,7 @@
    ami_id: ami-0220d79f3f480ecf5
    domain_name: sanjeethadevops.online
    env: dev
-   ec2_action: create
+   action: create
    instances:
      - catalogue
      - mongodb 
@@ -28,7 +28,7 @@
 
     loop: "{{ instances }}"
     register: ec2_output
-    when: ec2_action == "create"
+    when: action == "create"
 
   - name: print the output
     ansible.builtin.debug:
@@ -59,7 +59,7 @@
     loop: "{{ ec2_output.results }}"  
     when: 
     - item.item == "frontend"
-    - ec2_action == "create"
+    - action == "create"
 
     ### DESTROY ###
   - name: delete r53 records for frontend
